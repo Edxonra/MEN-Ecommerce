@@ -2,7 +2,7 @@ const userModel = require('../models/userModel')
 
 const validateCreateUser = async(req,res,next) =>{
   let user = req.body
-  let hasEmptyFields = validateEmptyFields(user)
+  let hasEmptyFields = validateEmptyFieldsForCreateUser(user)
   if(hasEmptyFields){
     return res.send('Empty fields')
   }
@@ -21,9 +21,10 @@ const validateCreateUser = async(req,res,next) =>{
   next()
 }
 
-const validateEmptyFields = (user) =>{
+const validateEmptyFieldsForCreateUser = (user) =>{
   let {name,email,password} = user
-  return !name||!email||!password
+  return typeof name!='string'||name==""||typeof email!='string'||email==""||typeof password!='string'||password==""
+  
 }
 
 const validateEmail = (email) =>{
@@ -41,4 +42,61 @@ const validatePassword = (password) =>{
   return passwordRegex.test(password)
 }
 
-module.exports = {validateCreateUser}
+const validateUpdateUser = (req,res,next) =>{
+  let isAdmin = req.body.isAdmin
+  let hasEmptyFields = validateEmptyFieldsForUpdateUser(isAdmin)
+  if(hasEmptyFields){
+    return res.send('Empty fields')
+  }
+  next()
+}
+
+const validateEmptyFieldsForUpdateUser = (isAdmin) =>{
+  return typeof isAdmin != 'boolean';
+}
+
+const validateUpdateProfile = (req,res,next) =>{
+  let user = req.body
+  let hasEmptyFields = validateEmptyFieldsForUpdateProfile(user)
+  if(hasEmptyFields){
+    return res.send('Empty fields')
+  }
+  let isPasswordStrong = validatePassword(user.password)
+  if(!isPasswordStrong){
+    return res.send('Password is too weak')
+  }
+  next()
+}
+
+const validateEmptyFieldsForUpdateProfile = (user) =>{
+  let {name,password} = user
+  return typeof name!='string'||name==""||typeof password!='string'||password==""
+}
+
+const validateLogUser = async(req,res,next) =>{
+  let user = req.body
+  let hasEmptyFields = validateEmptyFieldsForLogUser(user)
+  if(hasEmptyFields){
+    return res.send('Empty fields')
+  }
+  let isEmailValid = validateEmail(user.email)
+  if(!isEmailValid){
+    return res.send('Invalid email')
+  }
+  let isEmailRegistered = await validateEmailInUse(user.email)
+  if(!isEmailRegistered){
+    return res.send('Email is not registered')
+  }
+  let isPasswordStrong = validatePassword(user.password)
+  if(!isPasswordStrong){
+    return res.send('Password is too weak')
+  }
+  next()
+}
+
+const validateEmptyFieldsForLogUser = (user) =>{
+  let {email,password} = user
+  return typeof email!='string'||email==""||typeof password!='string'||password==""
+}
+
+module.exports = {validateCreateUser,validateUpdateUser,validateUpdateProfile,validateLogUser}
