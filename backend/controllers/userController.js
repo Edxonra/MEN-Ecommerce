@@ -83,7 +83,13 @@ const logUser = async(req,res) =>{
   if(!matchesPassword){
     return res.send('Wrong password')
   }
-  res.json(user)
+  res.json({
+    name:user.name,
+    email,
+    password:user.password,
+    _id:user.id,
+    token:generateToken(user._id)
+  })
 }
 
 module.exports = {createUser,readUsers,readUser,readProfile,updateUser,updateProfile,deleteUser,logUser}
