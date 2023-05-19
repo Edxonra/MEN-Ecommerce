@@ -25,11 +25,16 @@ const isLogged = async(req,res,next) =>{
 }
 
 const isAdmin = (req,res,next) =>{
-  let user = req.user
-  if(!user.isAdmin){
-    return res.status(403).send('User is not admin')
-  }
-  next()
+  isLogged(req,res,(error)=>{
+    if(error){
+      return next(error)
+    }
+    let user = req.user
+    if(!user.isAdmin){
+      return res.status(403).send('User is not admin')
+    }
+    next()
+  })
 }
 
 module.exports = {isLogged,isAdmin}

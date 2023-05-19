@@ -24,7 +24,6 @@ const validateCreateUser = async(req,res,next) =>{
 const validateEmptyFieldsForCreateUser = (user) =>{
   let {name,email,password} = user
   return typeof name!='string'||name==""||typeof email!='string'||email==""||typeof password!='string'||password==""
-  
 }
 
 const validateEmail = (email) =>{
