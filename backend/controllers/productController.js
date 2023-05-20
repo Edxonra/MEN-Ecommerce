@@ -12,7 +12,15 @@ const readProducts = async(req,res) =>{
 
 const readProduct = async(req,res) =>{
   let id = req.params.id
-  let product = await productModel.findById(id)
+  let product
+  try{
+    product = await productModel.findById(id)
+    if(!product){
+      throw new Error();
+    }
+  }catch{
+    return res.status(404).send('Product not found')
+  }
   res.json(product)
 }
 
