@@ -24,3 +24,6 @@ Testing done with Postman & Newman
 ```sh
 $ newman run MEN-Ecommerce.json -e MEN-Ecommerce.environment.json
 ```
+
+## Deploy
+Not deployed since Heroku Free Tier is no longer available
