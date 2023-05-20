@@ -2,9 +2,11 @@ const express = require('express')
 const multer = require('multer');
 const router = express.Router()
 
+storageFolder = process.env.STORAGE
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public');
+    cb(null, storageFolder);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now()+".jpg");
