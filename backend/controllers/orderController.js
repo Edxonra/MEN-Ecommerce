@@ -97,7 +97,6 @@ const updateOrderCancel = async(req,res) =>{
 
 const deleteOrder = async(req,res) =>{
   let id = req.params.id
-  console.log(id)
   try{
     let deletedOrder = await orderModel.findByIdAndDelete(id)
     if(!deletedOrder){

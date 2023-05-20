@@ -5,6 +5,10 @@ const productSchema = new mongoose.Schema({
     type:String,
     default:"Sample name"
   },
+  image:{
+    type:String,
+    default:"sample_image.jpg"
+  },
   brand:{
     type:String,
     default:"Sample brand"
